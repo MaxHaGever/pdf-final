@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+    image: maxspector/pdf-frontend:1.0
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"            # Expose Nginx on port 80
+
+  backend:
+    build:
+      context: ./backend
+    image: maxspector/pdf-backend:1.0
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    ports:
+      - "5020:5020"
+    volumes:
+      - ./backend/uploads:/usr/src/app/uploads
+
+  db:
+    image: mongo:6.0
+    restart: unless-stopped
+    volumes:
+      - dbdata:/data/db
+
+volumes:
+  dbdata:
