@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      direction: rtl;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
+    .logo {
+      max-height: 80px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: center;
+    }
+    .totals {
+      margin-top: 20px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <% if (data.companyName) { %><h2><%= data.companyName %></h2><% } %>
+      <% if (data.companyAddress) { %><p><%= data.companyAddress %></p><% } %>
+      <% if (data.companyPhone) { %><p><%= data.companyPhone %></p><% } %>
+      <% if (data.companyEmail) { %><p><%= data.companyEmail %></p><% } %>
+      <% if (data.companyWebsite) { %><p><%= data.companyWebsite %></p><% } %>
+    </div>
+    <% if (header.logoUrl) { %>
+      <img src="<%= header.logoUrl %>" class="logo" />
+    <% } %>
+  </header>
+
+  <h1>דרישת תשלום</h1>
+  <% if (data.invoiceNumber) { %><p>מספר דרישה: <%= data.invoiceNumber %></p><% } %>
+  <% if (data.issueDate) { %><p>תאריך הנפקה: <%= data.issueDate %></p><% } %>
+  <% if (data.dueDate) { %><p>תאריך יעד: <%= data.dueDate %></p><% } %>
+  <% if (data.clientName) { %><p>לקוח: <%= data.clientName %></p><% } %>
+
+  <% if (data.items && data.items.length) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>תיאור</th>
+          <th>כמות</th>
+          <th>מחיר ליחידה</th>
+          <th>סה"כ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.items.forEach(item => { %>
+          <tr>
+            <td><%= item.description %></td>
+            <td><%= item.quantity %></td>
+            <td><%= item.unitPrice %></td>
+            <td><%= item.total %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+
+  <div class="totals">
+    <% if (typeof data.vat === 'number' && data.vat > 0) { %>
+      <p>סה"כ לפני מע"מ: <%= data.total %> ש"ח</p>
+      <p>מע"מ: <%= data.vat %> ש"ח</p>
+      <p><strong>סה"כ לתשלום: <%= data.total + data.vat %> ש"ח</strong></p>
+    <% } else if (typeof data.total === 'number') { %>
+      <p><strong>סה"כ לתשלום: <%= data.total %> ש"ח</strong></p>
+    <% } %>
+  </div>
+
+  <% if (data.paymentDetails) { %>
+    <h3>פרטי תשלום:</h3>
+    <% const pd = data.paymentDetails; %>
+    <% if (pd.bankName) { %><p>בנק: <%= pd.bankName %></p><% } %>
+    <% if (pd.accountOwner) { %><p>בעל החשבון: <%= pd.accountOwner %></p><% } %>
+    <% if (pd.branchNumber) { %><p>סניף: <%= pd.branchNumber %></p><% } %>
+    <% if (pd.accountNumber) { %><p>מס' חשבון: <%= pd.accountNumber %></p><% } %>
+  <% } %>
+</body>
+</html>

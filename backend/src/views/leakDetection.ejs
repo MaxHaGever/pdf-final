@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @page {
+      margin: 20px 40px 30px 40px;
+    }
+    body {
+      font-family: 'DejaVu Sans', Arial, sans-serif;
+      margin: 0;
+      direction: rtl;
+      position: relative;
+      color: #333;
+      padding-bottom: 70px;
+    }
+    .top-bar {
+      position: absolute;
+      top: 20px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9em;
+    }
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 60px;
+      margin-bottom: 10px;
+      flex-direction: column;
+      text-align: center;
+    }
+    .company-info {
+      line-height: 1.4;
+    }
+      .company-info {
+    line-height: 1.4;
+  }
+  .company-info > * {
+    /* ↓ tighter spacing here ↓ */
+    margin: 2px 0;
+  }
+  .company-info h2,
+  .company-info p {
+    /* ensure headings/paragraphs don’t introduce extra margins */
+    margin: 2px 0;
+  }
+
+    .logo {
+      max-height: 80px;
+      margin-bottom: 10px;
+    }
+    .separator {
+      border: none;
+      border-top: 1px solid #333;
+      margin: 20px 0;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    .section h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 5px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: right;
+    }
+    ol {
+      list-style: decimal inside;
+      padding-right: 20px;
+    }
+    .image-block {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .leak-photo {
+      max-width: 100%;
+      max-height: 200px;
+    }
+    .caption {
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+    /* footer styling */
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 0.8em;
+      border-top: 1px solid #ccc;
+      padding-top: 4px;
+    }
+    .footer {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8em;
+  border-top: 1px solid #ccc;
+  padding-top: 4px;
+  background: white; /* ← ensure it's not transparent */
+}
+    .report-details th {
+  background-color: #f5f5f5;
+}
+  </style>
+</head>
+<body>
+  <!-- Top bar with בס"ד on the right and date on the left -->
+  <div class="top-bar">
+    <span>בס״ד</span>
+    <span><%= new Date(header.date).toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+  </div>
+
+  <header>
+    <div class="company-info">
+      <% if (header.logoUrl) { %>
+        <img src="<%= header.logoUrl %>" class="logo" />
+      <% } %>
+      <% if (data.companyName) { %><h2><%= data.companyName %></h2><% } %>
+      <% if (data.companyAddress) { %><p><%= data.companyAddress %></p><% } %>
+      <% if (data.companyPhone) { %><p>טלפון: <%= data.companyPhone %></p><% } %>
+      <% if (data.companyEmail) { %><p>אימייל: <%= data.companyEmail %></p><% } %>
+      <% if (data.companyWebsite) { %><p>אתר: <%= data.companyWebsite %></p><% } %>
+      <% if (data.companyId) { %><p>מספר חברה: <%= data.companyId %></p><% } %>
+    </div>
+  </header>
+
+  <hr class="separator" />
+
+  <h1>דוח איתור נזילות</h1>
+
+  <div class="section">
+    <h2>פרטי הדו"ח</h2>
+    <table class="report-details">
+      <tbody>
+        <% if (data.reportDate) { %><tr><th>תאריך הדו"ח</th><td><%= data.reportDate %></td></tr><% } %>
+        <% if (data.propertyAddress) { %><tr><th>כתובת הנכס</th><td><%= data.propertyAddress %></td></tr><% } %>
+        <% if (data.clientName) { %><tr><th>לקוח</th><td><%= data.clientName %></td></tr><% } %>
+        <% if (data.performedBy) { %><tr><th>מבצע הבדיקה</th><td><%= data.performedBy %></td></tr><% } %>
+        <% if (data.licenseNumber) { %><tr><th>מספר רישיון</th><td><%= data.licenseNumber %></td></tr><% } %>
+        <% if (data.contactNumber) { %><tr><th>טלפון ליצירת קשר</th><td><%= data.contactNumber %></td></tr><% } %>
+        <% if (data.propertyType) { %><tr><th>סוג הנכס</th><td><%= data.propertyType %></td></tr><% } %>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>סקירה כללית</h2>
+    <p><%= data.overview %></p>
+  </div>
+
+
+
+  <% if (data.contactExprience) { %>
+    <div class="section">
+      <h2>ניסיון מקצועי</h2>
+      <p><%= data.contactExprience %></p>
+    </div>
+  <% } %>
+
+  <% if (data.testTools && data.testTools.length) { %>
+    <div class="section">
+      <h2>שיטות בדיקה</h2>
+      <ol>
+        <% data.testTools.forEach(tool => { %>
+          <li><%= tool %></li>
+        <% }) %>
+      </ol>
+    </div>
+  <% } %>
+
+  <% if (data.leakLocations && data.leakLocations.length) { %>
+    <div class="section">
+      <h2>מוקדי נזילות</h2>
+      <% data.leakLocations.forEach((loc, idx) => { %>
+        <h3>מוקד <%= idx + 1 %>: <%= loc.location %></h3>
+        <p><%= loc.description %></p>
+
+        <% if (optional.images && optional.images[idx]) { %>
+          <div class="image-block">
+            <img src="<%= optional.images[idx].url %>" class="leak-photo" />
+            <% if (optional.images[idx].description) { %>
+              <p class="caption"><%= optional.images[idx].description %></p>
+            <% } %>
+          </div>
+        <% } %>
+      <% }) %>
+    </div>
+  <% } %>
+
+  <% if (data.recommendations && data.recommendations.length) { %>
+    <div class="section">
+      <h2>המלצות להמשך טיפול</h2>
+      <ol>
+        <% data.recommendations.forEach(rec => { %>
+          <li><%= rec %></li>
+        <% }) %>
+      </ol>
+    </div>
+  <% } %>
+
+  <% if (data.additionalNotes) { %>
+    <div class="section">
+      <h2>הערות נוספות</h2>
+      <p><%= data.additionalNotes %></p>
+    </div>
+  <% } %>
+</body>
+</html>
