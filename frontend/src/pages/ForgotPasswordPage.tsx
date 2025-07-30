@@ -69,13 +69,14 @@ export default function ForgotPasswordPage() {
               אימייל
             </label>
             <input
-              type="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-white placeholder:text-right focus:ring-2 focus:ring-blue-500"
-            />
+  type="email"
+  placeholder="name@example.com"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  required
+  dir="ltr"
+  className="w-full pl-4 pr-4 py-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-white text-left placeholder:text-left focus:ring-2 focus:ring-blue-500"
+/>
           </div>
 
           <button

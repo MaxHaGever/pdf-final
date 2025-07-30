@@ -58,52 +58,57 @@ export default function LoginPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email */}
-          <div>
-            <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-              אימייל
-            </label>
-            <div className="relative">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="name@example.com"
-                className="w-full pr-10 pl-4 py-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 placeholder:text-right"
-              />
-              <MailIcon className="absolute top-2.5 right-3 h-5 w-5 text-gray-400" />
-            </div>
-          </div>
 
-          {/* Password */}
-          <div>
-            <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
-              סיסמה
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                className="w-full pr-10 pl-4 py-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 placeholder:text-right"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute top-2.5 right-3"
-                aria-label={showPassword ? "הסתר סיסמה" : "הצג סיסמה"}
-              >
-                {showPassword ? (
-                  <EyeOffIcon className="h-5 w-5 text-gray-400" />
-                ) : (
-                  <EyeIcon className="h-5 w-5 text-gray-400" />
-                )}
-              </button>
-            </div>
-          </div>
+
+          {/* Email */}
+<div>
+  <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+    אימייל
+  </label>
+  <div className="relative">
+    <input
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+      placeholder="name@example.com"
+      dir="ltr"
+      className="w-full pr-10 pl-4 py-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 text-left placeholder:text-left"
+    />
+    <MailIcon className="absolute top-2.5 right-3 h-5 w-5 text-gray-400" />
+  </div>
+</div>
+
+{/* Password */}
+<div>
+  <label className="block mb-1 text-sm text-gray-700 dark:text-gray-300">
+    סיסמה
+  </label>
+  <div className="relative">
+    <input
+      type={showPassword ? "text" : "password"}
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+      placeholder="••••••••"
+      dir="ltr"
+      className="w-full pr-10 pl-4 py-2 text-sm rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 text-left placeholder:text-left"
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute top-2.5 right-3"
+      aria-label={showPassword ? "הסתר סיסמה" : "הצג סיסמה"}
+    >
+      {showPassword ? (
+        <EyeOffIcon className="h-5 w-5 text-gray-400" />
+      ) : (
+        <EyeIcon className="h-5 w-5 text-gray-400" />
+      )}
+    </button>
+  </div>
+</div>
+
 
           {/* Error */}
           {error && (
@@ -129,7 +134,8 @@ export default function LoginPage() {
           >
             שכחת סיסמה?
           </Link>
-          <span>
+            {/* 
+            <span>
             אין לך חשבון?{" "}
             <Link
               to="/register"
@@ -137,7 +143,8 @@ export default function LoginPage() {
             >
               הירשם כאן
             </Link>
-          </span>
+            </span>
+            */}
         </div>
       </div>
     </div>
