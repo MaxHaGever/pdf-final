@@ -13,8 +13,6 @@ import {
   ExclamationCircleIcon,
 } from '@heroicons/react/outline';
 
-const VITE_API_URL = import.meta.env.VITE_API_URL;
-
 interface UploadedImageResponse {
   url: string;
   description: string;
@@ -57,7 +55,7 @@ export default function Dashboard() {
   const logoSrc = user?.companyLogo
     ? user.companyLogo.startsWith('http')
       ? user.companyLogo
-      : `${VITE_API_URL}${user.companyLogo}`
+      : `/uploads/logos/${user.companyLogo}`
     : null;
 
   const handleProfile = () => navigate('/setup-profile');

@@ -16,8 +16,8 @@ export async function requireOnboarding(
 
     if (
       !user.hasChangedPassword ||
-      !user.hasAcceptedTerms ||
-      !user.companyName 
+      !user.hasAcceptedTerms 
+
     ) {
       return res.status(403).json({
         error: "User has not completed onboarding",
