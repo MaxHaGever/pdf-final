@@ -1,33 +1,70 @@
+version: "3.9"
+
 services:
-  frontend:
-    build:
-      context: ./frontend
-    image: maxspector/pdf-frontend:1.0
-    restart: unless-stopped
-    depends_on:
-      - backend
-    ports:
-      - "80:80"            # Expose Nginx on port 80
-
-  backend:
-    build:
-      context: ./backend
-    image: maxspector/pdf-backend:1.0
-    restart: unless-stopped
-    env_file:
-      - ./backend/.env
-    depends_on:
-      - db
-    ports:
-      - "5020:5020"
-    volumes:
-      - ./backend/uploads:/usr/src/app/uploads
-
   db:
     image: mongo:6.0
     restart: unless-stopped
     volumes:
       - dbdata:/data/db
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+    # don't pin a prebuilt image—always build from your latest code
+    # image: maxspector/pdf-backend:${NODE_ENV:-dev}
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_started
+    ports:
+      - "${BACKEND_PORT:-5020}:5020"
+    volumes:
+      # in dev mode, mount your code so edits show up without rebuild
+      - "${DEV_MODE:+./backend}:/usr/src/app:cached"
+      # always persist uploads
+      - uploads:/usr/src/app/uploads
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    healthcheck:
+      # only run in prod
+      test: ["CMD", "curl", "-f", "http://localhost:5020/api/health"]
+      interval: ${HEALTH_INTERVAL:-30s}
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+    # image: maxspector/pdf-frontend:${NODE_ENV:-dev}
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    volumes:
+      # in dev mode, mount your React sources for hot‑reload
+      - "${DEV_MODE:+./frontend}:/app:cached"
+      - /app/node_modules
+    environment:
+      # in dev, point at your local backend; in prod, proxy as /api
+      - VITE_API_URL=${VITE_API_URL}
+      - NODE_ENV=${NODE_ENV:-development}
+    healthcheck:
+      # only meaningful in prod
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: ${HEALTH_INTERVAL:-30s}
+      timeout: 5s
+      retries: 3
+
 volumes:
   dbdata:
+  uploads:
